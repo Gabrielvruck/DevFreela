@@ -9,7 +9,7 @@ namespace DevFreela.Application.Commands.CreateComment
         private readonly IProjectRepository _projectRepository;
         public CreateCommentCommandHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<Unit> Handle(CreateCommentCommand request, CancellationToken cancellationToken)

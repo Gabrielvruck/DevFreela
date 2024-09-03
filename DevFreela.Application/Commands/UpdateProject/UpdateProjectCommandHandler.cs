@@ -8,7 +8,7 @@ namespace DevFreela.Application.Commands.UpdateProject
         private readonly IProjectRepository _projectRepository;
         public UpdateProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<Unit> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)

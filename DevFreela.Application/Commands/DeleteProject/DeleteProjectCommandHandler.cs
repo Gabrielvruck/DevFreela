@@ -8,7 +8,7 @@ namespace DevFreela.Application.Commands.DeleteProject
         private readonly IProjectRepository _projectRepository;
         public DeleteProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<Unit> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)

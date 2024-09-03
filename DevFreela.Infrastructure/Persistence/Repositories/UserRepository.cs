@@ -12,6 +12,12 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task AddAsync(User user, CancellationToken cancellationToken)
+        {
+            await _dbContext.Users.AddAsync(user, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<User> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id, cancellationToken: cancellationToken);

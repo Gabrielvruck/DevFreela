@@ -9,7 +9,7 @@ namespace DevFreela.Application.Commands.CreateProject
         private readonly IProjectRepository _projectRepository;
         public CreateProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<int> Handle(CreateProjectCommand request, CancellationToken cancellationToken)

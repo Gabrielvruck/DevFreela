@@ -9,7 +9,7 @@ namespace DevFreela.Application.Queries.GetAllProjects
         private readonly IProjectRepository _projectRepository;
         public GetAllProjectsQueryHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
         public async Task<List<ProjectViewModel>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {

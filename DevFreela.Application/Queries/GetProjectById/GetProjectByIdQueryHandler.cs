@@ -9,7 +9,7 @@ namespace DevFreela.Application.Queries.GetProjectById
         private readonly IProjectRepository _projectRepository;
         public GetProjectByIdQueryHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<ProjectDetailsViewModel> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)

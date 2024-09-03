@@ -9,7 +9,7 @@ namespace DevFreela.Application.Queries.GetUser
         private readonly IUserRepository _userRepository;
         public GetUserQueryHandler(IUserRepository userRepository)
         {
-            _userRepository = userRepository;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         }
 
         public async Task<UserViewModel> Handle(GetUserQuery request, CancellationToken cancellationToken)

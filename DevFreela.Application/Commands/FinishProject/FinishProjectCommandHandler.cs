@@ -8,7 +8,7 @@ namespace DevFreela.Application.Commands.FinishProject
         private readonly IProjectRepository _projectRepository;
         public FinishProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<Unit> Handle(FinishProjectCommand request, CancellationToken cancellationToken)

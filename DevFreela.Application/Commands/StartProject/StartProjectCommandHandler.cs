@@ -8,7 +8,7 @@ namespace DevFreela.Application.Commands.StartProject
         private readonly IProjectRepository _projectRepository;
         public StartProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            _projectRepository = projectRepository ?? throw new ArgumentNullException(nameof(projectRepository));
         }
 
         public async Task<Unit> Handle(StartProjectCommand request, CancellationToken cancellationToken)
