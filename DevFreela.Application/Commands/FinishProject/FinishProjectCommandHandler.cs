@@ -1,24 +1,21 @@
-﻿using DevFreela.Infrastructure.Persistence;
+﻿using DevFreela.Core.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Application.Commands.FinishProject
 {
     public class FinishProjectCommandHandler : IRequestHandler<FinishProjectCommand, Unit>
     {
-        private readonly DevFreelaDbContext _dbContext;
-        public FinishProjectCommandHandler(DevFreelaDbContext dbContext)
+        private readonly IProjectRepository _projectRepository;
+        public FinishProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _projectRepository = projectRepository;
         }
 
         public async Task<Unit> Handle(FinishProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken);
-
+            var project = await _projectRepository.GetByIdAsync(request.Id, cancellationToken);
             project.Finish();
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
+            await _projectRepository.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

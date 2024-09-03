@@ -1,38 +1,21 @@
-﻿using Dapper;
-using DevFreela.Infrastructure.Persistence;
+﻿using DevFreela.Core.Repositories;
 using MediatR;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DevFreela.Application.Commands.StartProject
 {
     public class StartProjectCommandHandler : IRequestHandler<StartProjectCommand, Unit>
     {
-        private readonly DevFreelaDbContext _dbContext;
-        private readonly string _connectionString;
-        public StartProjectCommandHandler(DevFreelaDbContext dbContext, IConfiguration configuration)
+        private readonly IProjectRepository _projectRepository;
+        public StartProjectCommandHandler(IProjectRepository projectRepository)
         {
-            _dbContext = dbContext;
-            _connectionString = configuration.GetConnectionString("DevFreelaCs");
+            _projectRepository = projectRepository;
         }
 
         public async Task<Unit> Handle(StartProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = await _dbContext.Projects.SingleOrDefaultAsync(p => p.Id == request.Id, cancellationToken: cancellationToken);
-
+            var project = await _projectRepository.GetByIdAsync(request.Id,cancellationToken);
             project.Start();
-            // _dbContext.SaveChanges();
-
-            using (var sqlConnection = new SqlConnection(_connectionString))
-            {
-                await sqlConnection.OpenAsync(cancellationToken);
-
-                var script = "UPDATE Projects SET Status = @status, StartedAt = @startedat WHERE Id = @id";
-
-                await sqlConnection.ExecuteAsync(script, new { status = project.Status, startedat = project.StartedAt, request.Id });
-            }
-
+            await _projectRepository.StartAsync(project, cancellationToken);
             return Unit.Value;
         }
     }

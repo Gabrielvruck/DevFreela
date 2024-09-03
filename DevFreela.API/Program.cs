@@ -1,7 +1,7 @@
 using DevFreela.API.Models;
-using DevFreela.Application.Services.Implementations;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
+using DevFreela.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -10,9 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DevFreelaCs");
 builder.Services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IProjectService, ProjectService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ISkillService, SkillService>();
+//builder.Services.AddScoped<IProjectService, ProjectService>();
+//builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<ISkillService, SkillService>();
+
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
 builder.Services.AddMediatR((config) => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 //builder.Services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
