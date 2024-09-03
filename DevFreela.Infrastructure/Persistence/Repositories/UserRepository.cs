@@ -9,7 +9,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         private readonly DevFreelaDbContext _dbContext;
         public UserRepository(DevFreelaDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
         public async Task AddAsync(User user, CancellationToken cancellationToken)
