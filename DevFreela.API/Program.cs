@@ -1,7 +1,10 @@
 using DevFreela.API.Models;
+using DevFreela.Application.Validators;
 using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using DevFreela.Infrastructure.Persistence.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -18,14 +21,22 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
+
+
+
+
 builder.Services.AddMediatR((config) => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 //builder.Services.AddSingleton<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
 builder.Services.AddScoped<ExampleClass>(e => new ExampleClass { Name = "Initial Stage" });
-
 // Configurando a seção "OpeningTime" para a classe OpeningTimeOption
 builder.Services.Configure<OpeningTimeOption>(builder.Configuration.GetSection("OpeningTime"));
+
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
