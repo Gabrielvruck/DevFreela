@@ -22,7 +22,7 @@ namespace DevFreela.Application.Validators
                 .WithMessage("Nome é obrigatório!");
         }
 
-        public bool ValidPassword(string password)
+        public static bool ValidPassword(string password)
         {
             var regex = new Regex(@"^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!*@#$%^&+=]).*$");
 
