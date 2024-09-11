@@ -1,16 +1,14 @@
-﻿using MediatR;
-
-namespace DevFreela.Application.Commands.FinishProject
+﻿namespace DevFreela.Core.Dtos
 {
-    public class FinishProjectCommand : IRequest<Unit>
+    public class PaymentInfoDto
     {
-        public FinishProjectCommand(int id, string fullName, string creditCardNumber, string cvv, string expiresAt)
+        public PaymentInfoDto(int id, string creditCardNumber, string cvv, string expiresAt, string fullName)
         {
             Id = id;
-            FullName = fullName;
             CreditCardNumber = creditCardNumber;
             Cvv = cvv;
             ExpiresAt = expiresAt;
+            FullName = fullName;
         }
 
         public int Id { get; private set; }
