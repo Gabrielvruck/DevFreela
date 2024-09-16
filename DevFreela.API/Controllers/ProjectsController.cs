@@ -109,7 +109,7 @@ namespace DevFreela.API.Controllers
         public async Task<IActionResult> Finish([FromBody] FinishProjectCommand command)
         {
             await _mediator.Send(command);
-            return NoContent();
+            return Accepted();
         }
     }
 }
