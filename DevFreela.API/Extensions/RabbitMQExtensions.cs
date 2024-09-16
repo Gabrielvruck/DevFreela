@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using DevFreela.Core.Services;
+using DevFreela.Infrastructure.MessageBus;
+using RabbitMQ.Client;
 
 namespace DevFreela.API.Extensions
 {
@@ -14,13 +16,10 @@ namespace DevFreela.API.Extensions
                     UserName = userName,
                     Password = password
                 };
-
-                // Criação da conexão RabbitMQ
-                var connection = factory.CreateConnection();
-                // Criação do canal IModel
-                return connection.CreateModel();
+                return factory;
             });
 
+            services.AddScoped<IMessageBusService, MessageBusService>();
             return services;
         }
     }

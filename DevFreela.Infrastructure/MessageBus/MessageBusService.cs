@@ -6,17 +6,20 @@ namespace DevFreela.Infrastructure.MessageBus
 {
     public class MessageBusService : IMessageBusService
     {
-        private readonly IModel _channel;
-        //IConfiguration pegar os dados do appsettings user e senha 
-        public MessageBusService(IConfiguration configuration, ConnectionFactory factory, IModel channel)
+        private readonly ConnectionFactory _connectionFactory;
+
+        public MessageBusService(ConnectionFactory connectionFactory, IConfiguration configuration)
         {
-            _channel = channel ?? throw new ArgumentNullException(nameof(channel));
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
         public void Publish(string queue, byte[] message)
         {
+            using var connection = _connectionFactory.CreateConnection();
+            using var channel = connection.CreateModel();
+
             //garantir que a fila seja criada
-            _channel.QueueDeclare(
+            channel.QueueDeclare(
                 queue: queue,
                 durable: false,
                 exclusive: false,
@@ -25,7 +28,7 @@ namespace DevFreela.Infrastructure.MessageBus
             );
 
             //publicar a mensagem
-            _channel.BasicPublish(
+            channel.BasicPublish(
                 exchange: "",
                 routingKey: queue,
                 basicProperties: null,
