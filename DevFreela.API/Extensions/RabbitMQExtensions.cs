@@ -16,7 +16,11 @@ namespace DevFreela.API.Extensions
                     UserName = userName,
                     Password = password
                 };
-                return factory;
+                // Criação da conexão RabbitMQ
+                var connection = factory.CreateConnection();
+
+                // Criação do canal IModel
+                return connection.CreateModel();
             });
 
             services.AddScoped<IMessageBusService, MessageBusService>();

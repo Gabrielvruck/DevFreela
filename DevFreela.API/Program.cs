@@ -1,6 +1,7 @@
 using DevFreela.API.Extensions;
 using DevFreela.API.Models;
 using DevFreela.Application.Commands.CreateUser;
+using DevFreela.Application.Consumers;
 using DevFreela.Application.Validators;
 using DevFreela.Infrastructure.Persistence;
 using FluentValidation;
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServe
 builder.Services.AddHttpClient();
 builder.Services.AddRabbitMQ("localhost", "guest", "guest");
 builder.Services.AddInfrastructure();
+
+builder.Services.AddHostedService<PaymentApprovedConsumer>();
 
 //// Configurando a seção "OpeningTime" para a classe OpeningTimeOption
 builder.Services.Configure<OpeningTimeOption>(builder.Configuration.GetSection("OpeningTime"));
