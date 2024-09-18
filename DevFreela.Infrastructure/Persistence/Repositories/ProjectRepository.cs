@@ -41,7 +41,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
                 projects = projects
                     .Where(p =>
                         p.Title.Contains(query) ||
-                        p.Description.Contains(query));
+                        EF.Functions.Like(p.Description, $"%{query}%"));
             }
 
             return await projects.GetPaged<Project>(page, PAGE_SIZE);
