@@ -1,38 +1,45 @@
-﻿using Dapper;
-using DevFreela.Core.Dtos;
+﻿using DevFreela.Core.Entities;
+using DevFreela.Core.Models;
 using DevFreela.Core.Repositories;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.Infrastructure.Persistence.Repositories
 {
     public class SkillRepository : ISkillRepository
     {
-        private readonly string _connectionString;
-        public SkillRepository(IConfiguration configuration)
+        private readonly DevFreelaDbContext _dbContext;
+        private const int PAGE_SIZE = 10;
+        public SkillRepository(DevFreelaDbContext dbContext)
         {
-            _connectionString = configuration.GetConnectionString("DevFreelaCs");
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public async Task<List<SkillDto>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<PaginationResult<Skill>> GetAllAsync(string query, int page, CancellationToken cancellationToken)
         {
-            using (var sqlConnection = new SqlConnection(_connectionString))
-            {
-                await sqlConnection.OpenAsync(cancellationToken);
-                var script = "SELECT Id, Description FROM Skills";
-                var skills = await sqlConnection.QueryAsync<SkillDto>(script);
+            // Filtro
+            IQueryable<Skill> skills = _dbContext.Skills;
 
-                return skills.ToList();
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                skills = skills
+                    .Where(p =>
+                    p.Description.Contains(query) ||
+                    EF.Functions.Like(p.Description, $"%{query}%"));
             }
 
-            // COM EF CORE
-            //var skills = _dbContext.Skills;
+            return await skills.GetPaged<Skill>(page, PAGE_SIZE);
+        }
 
-            //var skillsViewModel = skills
-            //    .Select(s => new SkillViewModel(s.Id, s.Description))
-            //    .ToList();
+        public async Task AddSkillFromProject(Project project, CancellationToken cancellationToken)
+        {
+            // App Xamarin de Marketplace
+            var words = project.Description.Split(' ');
+            var length = words.Length;
 
-            //return skillsViewModel;
+            var skill = $"{project.Id} - {words[length - 1]}";
+            // "1 - Marketplace"
+
+            await _dbContext.Skills.AddAsync(new Skill(skill), cancellationToken);
         }
     }
 }

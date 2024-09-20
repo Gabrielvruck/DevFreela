@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DevFreela.Infrastructure.Auth
+namespace DevFreela.Infrastructure.Services.Auth
 {
     public class AuthService : IAuthService
     {

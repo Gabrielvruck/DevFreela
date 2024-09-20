@@ -3,7 +3,7 @@ using DevFreela.Core.Services;
 using System.Text;
 using System.Text.Json;
 
-namespace DevFreela.Infrastructure.Payments
+namespace DevFreela.Infrastructure.Services.Payments
 {
     public class PaymentService : IPaymentService
     {

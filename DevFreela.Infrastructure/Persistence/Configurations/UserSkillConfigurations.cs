@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DevFreela.Infrastructure.Configurations
+namespace DevFreela.Infrastructure.Persistence.Configurations
 {
     public class UserSkillConfigurations : IEntityTypeConfiguration<UserSkill>
     {
