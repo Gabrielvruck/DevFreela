@@ -27,6 +27,7 @@ namespace DevFreela.Infrastructure.Persistence.Repositories
         public async Task AddCommentAsync(ProjectComment projectComment, CancellationToken cancellationToken)
         {
             await _dbContext.ProjectComments.AddAsync(projectComment, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<PaginationResult<Project>> GetAllAsync(string query, int page, CancellationToken cancellationToken)
