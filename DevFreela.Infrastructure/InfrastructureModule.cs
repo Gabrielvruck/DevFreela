@@ -41,6 +41,8 @@ namespace DevFreela.Infrastructure
         }
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            // Registro do repositório genérico (com escopo)
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISkillRepository, SkillRepository>();
