@@ -14,7 +14,7 @@ namespace DevFreela.Application.Queries.GetAllProjects
         }
         public async Task<PaginationResult<ProjectViewModel>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
-            var projectPaginationResult = await _projectRepository.GetAllAsync(request.Query, request.Page, cancellationToken);
+            var projectPaginationResult = await _projectRepository.GetAllAsync(request.Title, request.Page, cancellationToken);
 
             var projectsViewModel = projectPaginationResult
                  .Data
