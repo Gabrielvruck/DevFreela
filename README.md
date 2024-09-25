@@ -3,8 +3,10 @@
 * Persistência com Entity Framework Core
 * Command Query Responsibility Segregation (CQRS)
 * Padrão Repository
+* Repository Generic Crud
 * Validação de APIs
 * Autenticação e Autorização com JWT
 * Testes Unitários com xUnit
 * Mensageria com RabbitMQ
 * Padrão Unit Of Work na Prática
+* 
